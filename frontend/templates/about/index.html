@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% block title %}Tentang Sistem{% endblock %}
+{% block page_title %}Tentang Sistem{% endblock %}
+{% block page_subtitle %}Dokumentasi resmi dan profil tim pengembang Si ASPIRA{% endblock %}
+
+{% block content %}
+<!-- Section 1: Tim Pengembang (Developers) -->
+<div class="card-dark mb-4">
+    <div class="card-header-custom">
+        <div>
+            <div class="card-title" style="font-size:16px;">
+                <i class="bi bi-people-fill text-primary me-2"></i>Tim Pengembang (Developers)
+            </div>
+            <div class="card-subtitle">Profil dan peran pengembang di balik platform Si ASPIRA</div>
+        </div>
+        <span class="badge" style="background:rgba(59,130,246,0.15);color:var(--accent-blue);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;">
+            <i class="bi bi-mortarboard me-1"></i>Teknik Informatika
+        </span>
+    </div>
+
+    <div class="row g-3">
+        {% for dev in developers %}
+        <div class="col-xl-3 col-md-6 col-12">
+            <div class="dev-card p-3 rounded-3 text-center h-100 d-flex flex-column"
+                 style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);transition:all 0.25s;">
+                <!-- Bingkai Foto Profil Persegi 1:1 -->
+                <div class="dev-photo-box mx-auto mb-3">
+                    <img src="{{ url_for('static', filename=dev.photo) }}"
+                         alt="{{ dev.name }}" class="dev-photo-img">
+                </div>
+
+                <div class="mb-2">
+                    <span class="dev-role-badge {{ dev.badge }}">
+                        <i class="bi {{ dev.icon }} me-1"></i>{{ dev.role }}
+                    </span>
+                </div>
+
+                <h4 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">
+                    {{ dev.name }}
+                </h4>
+
+                <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:0;flex-grow:1;">
+                    {{ dev.desc }}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Section 2: Deskripsi Lengkap Sistem (1 Card Tersendiri) -->
+<div class="card-dark mb-4">
+    <div class="card-header-custom" style="border-bottom:1px solid var(--border-color);padding-bottom:14px;margin-bottom:20px;">
+        <div>
+            <div class="card-title" style="font-size:17px;font-weight:700;">
+                <i class="bi bi-journal-text text-primary me-2"></i>Deskripsi Lengkap Sistem Si ASPIRA
+            </div>
+            <div class="card-subtitle">Spesifikasi komprehensif rancangan Sistem Informasi Aspirasi dan Sarana Pengaduan Informatika Responsif Akademik</div>
+        </div>
+        <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;">
+            <i class="bi bi-shield-check me-1"></i>Versi Resmi 1.0
+        </span>
+    </div>
+
+    <!-- Konten Dokumentasi Lengkap Sistem -->
+    <div class="doc-body" style="font-size:13.5px;color:var(--text-secondary);line-height:1.8;">
+        <!-- 1. Deskripsi Umum -->
+        <div class="doc-item mb-4">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <span class="doc-badge-num">1</span> Deskripsi Umum
+            </h3>
+            <p>
+                <strong>Si ASPIRA</strong> (<em>Sistem Informasi Aspirasi dan Sarana Pengaduan Informatika Responsif Akademik</em>) merupakan platform digital terpusat yang dirancang khusus untuk Program Studi Teknik Informatika, Universitas Pahlawan Tuanku Tambusai. Sistem ini menghubungkan mahasiswa dan pengelola program studi secara transparan dan akuntabel guna menampung keluhan, saran, maupun permohonan akademik.
+            </p>
+        </div>
+
+        <hr style="border-color:var(--border-color);margin:16px 0;">
+
+        <!-- 2. Latar Belakang & Identitas Kampus -->
+        <div class="doc-item mb-4">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <span class="doc-badge-num">2</span> Latar Belakang & Identitas
+            </h3>
+            <p>
+                Sebelum hadirnya Si ASPIRA, penyampaian aspirasi dan aduan mahasiswa seringkali tersebar di berbagai saluran tidak resmi seperti percakapan pribadi atau media sosial, sehingga penanganannya menjadi lambat dan sulit dipantau. Dengan Si ASPIRA, setiap laporan kini memiliki nomor tiket unik yang terdokumentasi rapi, transparan, dan memiliki kepastian waktu respon (*SLA*).
+            </p>
+        </div>
+
+        <hr style="border-color:var(--border-color);margin:16px 0;">
+
+        <!-- 3. Tujuan Pengembangan -->
+        <div class="doc-item mb-4">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <span class="doc-badge-num">3</span> Tujuan Pengembangan
+            </h3>
+            <ul style="padding-left:20px;margin-bottom:0;">
+                <li>Menyediakan sarana resmi yang mudah diakses oleh seluruh mahasiswa Program Studi Teknik Informatika.</li>
+                <li>Meningkatkan transparansi dan akuntabilitas penanganan keluhan dan perbaikan fasilitas kampus.</li>
+                <li>Memudahkan pengelola prodi dalam memonitor tren keluhan melalui analitik grafik dan laporan berkala.</li>
+                <li>Memberikan kepastian respon melalui notifikasi real-time dan pencatatan riwayat penanganan (*audit trail*).</li>
+            </ul>
+        </div>
+
+        <hr style="border-color:var(--border-color);margin:16px 0;">
+
+        <!-- 4. Sasaran Pengguna & Pembagian Peran -->
+        <div class="doc-item mb-4">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <span class="doc-badge-num">4</span> Sasaran Pengguna & Pembagian Peran
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3" style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);">
+                        <div style="font-weight:700;color:var(--accent-blue);margin-bottom:4px;"><i class="bi bi-mortarboard me-2"></i>Portal Mahasiswa (User)</div>
+                        <p style="font-size:12.5px;margin:0;">Mahasiswa aktif Teknik Informatika yang dapat mengajukan tiket pengaduan baru, mengunggah berkas bukti, memantau status penanganan, dan berdiskusi melalui kolom balasan resmi.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3" style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);">
+                        <div style="font-weight:700;color:var(--accent-green);margin-bottom:4px;"><i class="bi bi-shield-lock me-2"></i>Panel Administrasi (Petugas/Admin)</div>
+                        <p style="font-size:12.5px;margin:0;">Staf pengelola, pimpinan prodi, dan petugas yang bertugas memverifikasi keluhan masuk, memperbarui status tiket (*Baru, Diproses, Selesai, Ditolak*), memberikan tanggapan resmi, serta mengunduh rekap laporan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border-color:var(--border-color);margin:16px 0;">
+
+        <!-- 5. Kategori Pengaduan -->
+        <div class="doc-item mb-4">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <span class="doc-badge-num">5</span> Kategori Pengaduan Terpadu
+            </h3>
+            <p>Sistem mengelompokkan pengaduan ke dalam 7 kategori utama:</p>
+            <div class="d-flex flex-wrap gap-2 pt-1">
+                <span class="badge" style="background:rgba(59,130,246,0.12);color:var(--accent-blue);padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-book-fill me-1"></i>Akademik (KRS, Nilai, Jadwal)</span>
+                <span class="badge" style="background:rgba(16,185,129,0.12);color:var(--accent-green);padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-person-video3 me-1"></i>Dosen & Pengajaran</span>
+                <span class="badge" style="background:rgba(245,158,11,0.12);color:var(--accent-yellow);padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-building me-1"></i>Fasilitas Kampus</span>
+                <span class="badge" style="background:rgba(139,92,246,0.12);color:var(--accent-purple);padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-cpu-fill me-1"></i>Laboratorium Komputer</span>
+                <span class="badge" style="background:rgba(236,72,153,0.12);color:#f472b6;padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-file-earmark-text-fill me-1"></i>Administrasi & Surat</span>
+                <span class="badge" style="background:rgba(14,165,233,0.12);color:#38bdf8;padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-lightbulb-fill me-1"></i>Saran & Kritik</span>
+                <span class="badge" style="background:rgba(148,163,184,0.12);color:#94a3b8;padding:6px 10px;border-radius:6px;font-size:12px;"><i class="bi bi-question-circle-fill me-1"></i>Lainnya</span>
+            </div>
+        </div>
+
+        <hr style="border-color:var(--border-color);margin:16px 0;">
+
+        <!-- 6. Alur & Siklus Penanganan Tiket -->
+        <div class="doc-item mb-4">
+            <h3 style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                <span class="doc-badge-num">6</span> Alur & Siklus Penanganan Tiket
+            </h3>
+            <div class="p-3 rounded-3" style="background:rgba(0,0,0,0.2);border:1px solid var(--border-color);">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 text-center">
+                    <div class="p-2" style="flex:1;min-width:140px;">
+                        <div style="font-size:12px;font-weight:700;color:var(--accent-yellow);">1. Pengajuan</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Mahasiswa mengisi formulir & bukti</div>
+                    </div>
+                    <i class="bi bi-arrow-right text-muted d-none d-md-block"></i>
+                    <div class="p-2" style="flex:1;min-width:140px;">
+                        <div style="font-size:12px;font-weight:700;color:var(--accent-blue);">2. Verifikasi</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Status Menunggu / Tiket Terbit</div>
+                    </div>
+                    <i class="bi bi-arrow-right text-muted d-none d-md-block"></i>
+                    <div class="p-2" style="flex:1;min-width:140px;">
+                        <div style="font-size:12px;font-weight:700;color:var(--accent-purple);">3. Tindak Lanjut</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Status Sedang Diproses</div>
+                    </div>
+                    <i class="bi bi-arrow-right text-muted d-none d-md-block"></i>
+                    <div class="p-2" style="flex:1;min-width:140px;">
+                        <div style="font-size:12px;font-weight:700;color:var(--accent-green);">4. Penyelesaian</div>
+                        <div style="font-size:11px;color:var(--text-muted);">Tanggapan resmi & Tiket Selesai</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border-color:var(--border-color);margin:16px 0;">
+
+        <!-- 7. Semboyan Sistem -->
+        <div class="text-center py-3">
+            <i class="bi bi-quote" style="font-size:24px;color:var(--accent-blue);line-height:1;"></i>
+            <h4 style="font-size:17px;font-weight:800;color:var(--text-primary);margin:6px 0;">“Suaramu, Perubahan Kita”</h4>
+            <p style="font-size:12px;color:var(--text-muted);margin:0;max-width:540px;margin:0 auto;">
+                Menjadikan setiap aspirasi sebagai bagian dari upaya bersama untuk memajukan Program Studi Teknik Informatika yang unggul dan responsif.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Developer Photo Box (1:1 Aspect Ratio Square Box) */
+.dev-photo-box {
+    width: 90px;
+    height: 90px;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dev-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.dev-card:hover .dev-photo-img {
+    transform: scale(1.06);
+}
+.dev-card:hover {
+    border-color: rgba(59, 130, 246, 0.35) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    transform: translateY(-2px);
+}
+
+/* Badges for developer roles */
+.dev-role-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+}
+.badge-frontend {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--accent-blue);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+.badge-backend {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.badge-fullstack {
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+.badge-uiux {
+    background: rgba(236, 72, 153, 0.15);
+    color: #f472b6;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.doc-badge-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: rgba(59, 130, 246, 0.18);
+    color: var(--accent-blue);
+    font-size: 12px;
+    font-weight: 700;
+}
+</style>
+{% endblock %}

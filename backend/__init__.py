@@ -59,6 +59,7 @@ def create_app():
     from backend.routes.users import users_bp
     from backend.routes.reports import reports_bp
     from backend.routes.settings import settings_bp
+    from backend.routes.about import about_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
@@ -66,6 +67,7 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(reports_bp)
     app.register_blueprint(settings_bp)
+    app.register_blueprint(about_bp)
 
     @app.route('/')
     def root():

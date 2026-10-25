@@ -15,7 +15,7 @@ class Admin(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), default='admin')  # superadmin, admin, petugas
     is_active = db.Column(db.Boolean, default=True)
-    avatar = db.Column(db.String(255), nullable=True)
+    avatar = db.Column(db.Text, nullable=True)
     notif_sound_enabled = db.Column(db.Boolean, default=True)
     notif_sound_file = db.Column(db.String(255), nullable=True)
     notif_email = db.Column(db.Boolean, default=True)
@@ -23,6 +23,14 @@ class Admin(UserMixin, db.Model):
     notif_pending = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_login = db.Column(db.DateTime, nullable=True)
+
+    @property
+    def avatar_url(self):
+        if not self.avatar:
+            return None
+        if self.avatar.startswith('data:') or self.avatar.startswith('http://') or self.avatar.startswith('https://') or self.avatar.startswith('/'):
+            return self.avatar
+        return f"/static/uploads/avatars/{self.avatar}"
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

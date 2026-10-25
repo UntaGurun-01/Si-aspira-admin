@@ -53,8 +53,8 @@
                                     background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
                                     display:flex;align-items:center;justify-content:center;
                                     font-size:28px;font-weight:700;overflow:hidden;border:2px solid var(--border-color);">
-                            {% if current_user.avatar %}
-                            <img src="/static/uploads/avatars/{{ current_user.avatar }}" style="width:100%;height:100%;object-fit:cover;">
+                            {% if current_user.avatar_url %}
+                            <img src="{{ current_user.avatar_url }}" style="width:100%;height:100%;object-fit:cover;">
                             {% else %}
                             <span id="avatarInitial">{{ current_user.name[0].upper() if current_user.name else 'A' }}</span>
                             {% endif %}
@@ -508,8 +508,10 @@ async function saveProfile(event) {
                 const imgHtml = `<img src="${data.admin.avatar_url}" style="width:100%;height:100%;object-fit:cover;">`;
                 const sidebarAv = document.getElementById('sidebar-avatar');
                 const topbarAv = document.getElementById('topbar-avatar');
+                const profilePreview = document.getElementById('profileAvatarPreview');
                 if (sidebarAv) sidebarAv.innerHTML = imgHtml;
                 if (topbarAv) topbarAv.innerHTML = imgHtml;
+                if (profilePreview) profilePreview.innerHTML = imgHtml;
             } else {
                 const init = data.admin.initial;
                 const sidebarInit = document.getElementById('sidebar-avatar-initial');

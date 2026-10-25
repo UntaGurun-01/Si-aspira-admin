@@ -129,17 +129,44 @@ def update_profile():
     if existing_email:
         return jsonify({'success': False, 'message': f'Email "{email}" sudah terdaftar pada akun lain.'}), 400
 
-    avatar_url = None
+    avatar_url = current_user.avatar_url
     if 'avatar' in request.files:
         file = request.files['avatar']
         if file and file.filename != '' and allowed_image(file.filename):
-            ext = file.filename.rsplit('.', 1)[1].lower()
-            filename = f"admin_{current_user.id}_{uuid.uuid4().hex[:8]}.{ext}"
-            avatars_dir = get_upload_dir('avatars')
-            file_path = os.path.join(avatars_dir, filename)
-            file.save(file_path)
-            current_user.avatar = filename
-            avatar_url = f"/static/uploads/avatars/{filename}"
+            try:
+                import io
+                import base64
+                from PIL import Image
+
+                # Read and optimize with Pillow to 1:1 square
+                img = Image.open(file)
+                img = img.convert('RGB')
+                w, h = img.size
+                min_dim = min(w, h)
+                left = (w - min_dim) // 2
+                top = (h - min_dim) // 2
+                img = img.crop((left, top, left + min_dim, top + min_dim))
+                img = img.resize((256, 256), Image.Resampling.LANCZOS)
+
+                # Convert to Base64 Data URI for permanent DB storage (persistent across all serverless instances)
+                buf = io.BytesIO()
+                img.save(buf, format='JPEG', quality=85)
+                encoded = base64.b64encode(buf.getvalue()).decode('utf-8')
+                data_uri = f"data:image/jpeg;base64,{encoded}"
+
+                current_user.avatar = data_uri
+                avatar_url = data_uri
+
+                # Optional local disk backup
+                try:
+                    avatars_dir = get_upload_dir('avatars')
+                    file_path = os.path.join(avatars_dir, f"admin_{current_user.id}.jpg")
+                    with open(file_path, 'wb') as f_out:
+                        f_out.write(buf.getvalue())
+                except Exception:
+                    pass
+            except Exception as e:
+                print(f"Avatar processing error: {e}")
 
     current_user.name = name
     current_user.username = username
