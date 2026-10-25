@@ -12,6 +12,9 @@ settings_bp = Blueprint('settings', __name__, url_prefix='/settings')
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
 ALLOWED_AUDIO_EXTENSIONS = {'mp3'}
 
+# Deteksi lingkungan serverless (Vercel / AWS Lambda)
+IS_SERVERLESS = bool(os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'))
+
 
 def allowed_image(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
@@ -19,6 +22,16 @@ def allowed_image(filename):
 
 def allowed_audio(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_AUDIO_EXTENSIONS
+
+
+def get_upload_dir(subdir):
+    """Kembalikan path direktori upload yang writable (support Vercel /tmp)."""
+    if IS_SERVERLESS:
+        path = os.path.join('/tmp', 'uploads', subdir)
+    else:
+        path = os.path.join(current_app.root_path, '..', 'frontend', 'static', 'uploads', subdir)
+    os.makedirs(path, exist_ok=True)
+    return path
 
 
 @settings_bp.route('/')
@@ -122,9 +135,8 @@ def update_profile():
         if file and file.filename != '' and allowed_image(file.filename):
             ext = file.filename.rsplit('.', 1)[1].lower()
             filename = f"admin_{current_user.id}_{uuid.uuid4().hex[:8]}.{ext}"
-            static_dir = os.path.join(current_app.root_path, '../frontend/static/uploads/avatars')
-            os.makedirs(static_dir, exist_ok=True)
-            file_path = os.path.join(static_dir, filename)
+            avatars_dir = get_upload_dir('avatars')
+            file_path = os.path.join(avatars_dir, filename)
             file.save(file_path)
             current_user.avatar = filename
             avatar_url = f"/static/uploads/avatars/{filename}"
@@ -202,8 +214,7 @@ def update_notifications():
 
             ext = 'mp3'
             clean_name = f"custom_notif_{current_user.id}_{uuid.uuid4().hex[:6]}.{ext}"
-            audio_dir = os.path.join(current_app.root_path, '../frontend/static/uploads/audio')
-            os.makedirs(audio_dir, exist_ok=True)
+            audio_dir = get_upload_dir('audio')
             target_path = os.path.join(audio_dir, clean_name)
             file.save(target_path)
             sound_filename = clean_name

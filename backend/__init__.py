@@ -78,9 +78,14 @@ def create_app():
     # Serve user attachments & avatars
     root_uploads_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'frontend', 'static', 'uploads'))
     admin_uploads_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'static', 'uploads'))
+    tmp_uploads_dir = '/tmp/uploads'
 
     @app.route('/static/uploads/<path:filename>')
     def serve_shared_static_uploads(filename):
+        # Cek /tmp dulu (Vercel serverless writable dir)
+        tmp_path = os.path.join(tmp_uploads_dir, filename)
+        if os.path.exists(tmp_path):
+            return send_from_directory(tmp_uploads_dir, filename)
         if os.path.exists(os.path.join(admin_uploads_dir, filename)):
             return send_from_directory(admin_uploads_dir, filename)
         if os.path.exists(os.path.join(root_uploads_dir, filename)):
@@ -89,6 +94,9 @@ def create_app():
 
     @app.route('/uploads/<path:filename>')
     def serve_shared_uploads(filename):
+        tmp_path = os.path.join(tmp_uploads_dir, filename)
+        if os.path.exists(tmp_path):
+            return send_from_directory(tmp_uploads_dir, filename)
         if os.path.exists(os.path.join(admin_uploads_dir, filename)):
             return send_from_directory(admin_uploads_dir, filename)
         if os.path.exists(os.path.join(root_uploads_dir, filename)):
